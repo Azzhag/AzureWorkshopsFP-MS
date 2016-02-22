@@ -50,7 +50,7 @@ namespace Common
 
             _telemetry.TrackTrace(string.Format(CultureInfo.InvariantCulture, "Uploaded file {0}", fileName), SeverityLevel.Information);
 
-            return $"{_blobStorageUri.PrimaryUri}{ContainerName}/{fileName}";
+            return blockBlob.Uri.AbsolutePath;
         }
     }
 }
