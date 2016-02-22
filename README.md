@@ -28,7 +28,10 @@ Część druga
 ### Zadanie 3 - storage
 
 - Załóż usługę Storage Account.
-- Uzupełnij implantację klasy FilesStorageService, tak aby zapisywała ona pliki w Azure Storage i zwracała adres nowego bloba. Skozystaj z instrukcji w [dokumentacji](https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs#_programmatically-access-blob-storage) - sekcja Programmatically access Blob storage.
+- Uzupełnij implantację klasy FilesStorageService, tak aby zapisywała ona pliki w Azure Storage i zwracała adres nowego bloba. 
+    - Zainstaluj paczkę Nuget WindowsAzure.Storage do projetu zawierającego wspomnianą klasę.
+    - Wykorzystaj i uzupełnij zakomentowany kod.
+    - W razie problemów skozystaj z instrukcji w [dokumentacji](https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs#_programmatically-access-blob-storage) - sekcja Programmatically access Blob storage.
 - Po implementacji powinieneś móc dodać nowy wpis ze zdjęciem do dziennika projektu oraz wyświetlić to zdjęcie na liście wpisów.
 - Zaimplementuj zmiany lokalnie, nie musisz publikować ich na Chmurę. 
 
@@ -41,10 +44,11 @@ git checkout 02-storage
 
 ### Zadanie 4 - diagnostyka
 
-- Wykorzystaj opcję "Add Application Insights Telemetry" w menu kontekstowym aplikacji webowej w Visual Studio, aby skonfigurować wysyłanie danych diagnostycznych do usługi Application Insights.
-- Możesz wykorzystać instancję, która została stworzona automatycznie przy zakładaniu usługi Web App
+- Zainstaluj do projektu paczkę NuGet "Microsoft.ApplicationInsights.Web"
+- Znajdz w portalu Azure panel zarządzania usługią Application Insights (instancja została stworzona przy okazji tworzenia Web App) i znajdz Instrumentation Key
+- W pliku konfiguracyjnym "ApplicationInsights.config" skonfiguruj InstrumentationKey do stworzeniej instacji. 
 - Uruchom stronę (lokalnie). Dodaj nowe wpisy, otwórz kilka stron, aby wygenerować ruch.
-- Otwórz panel usługi Application Insights w portalu i przeanalizuj przesłane dane.
+- Po kilku minutach otwórz panel usługi Application Insights w portalu i przeanalizuj przesłane dane.
 
 ### Zadanie 5 - skalowanie
 
@@ -71,7 +75,7 @@ git checkout 04-web-jobs
 
 - Stwórz usługę Service Bus Namespace (w Azure Classic Portal: https://manage.windowsazure.com/)
 - Uzupełnij brakujące wartości w konfiguracji aplikacji, tak, aby aplikacja Web i PictureOptimizer skomunikowały się wykorzystując Service Bus
-- Przetestuj aplikacje lokalnie - dobrze działająca aplikacja powinna zmniejszać zapisane zdjęcia, i na widoku listy prezentować miniatury. 
+- Przetestuj aplikacje lokalnie - dobrze działająca aplikacja powinna zmniejszać zapisane zdjęcia i na widoku listy prezentować miniatury. 
 - Wdróż system na chmurę.
 - Korzystając Web Job Dashboard upewnij się, że aplikacja wdrożona aplikacja poprawnie przetwarza zdjęcia.
 
