@@ -10,8 +10,8 @@ namespace Common
             ////var storageAccount = CloudStorageAccount.Parse("azureStorageConnectionString");
             ////var blobClient = storageAccount.CreateCloudBlobClient();
             ////var container = blobClient.GetContainerReference("containername");
-            ////container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Container });
             ////container.CreateIfNotExists();
+            ////container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Container });
             ////var blockBlob = container.GetBlockBlobReference(fileName);
             ////blockBlob.Properties.ContentType = mimeType;
             ////await blockBlob.UploadFromStreamAsync(file);
