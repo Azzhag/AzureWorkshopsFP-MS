@@ -42,7 +42,7 @@ namespace Common
             blockBlob.Properties.ContentType = mimeType;
             await blockBlob.UploadFromStreamAsync(file);
 
-            return $"{_blobStorageUri.PrimaryUri}{ContainerName}/{fileName}";
+            return blockBlob.Uri.AbsolutePath;
         }
     }
 }
