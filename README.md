@@ -1,108 +1,123 @@
-# Projekt treningowy do warsztatu "Wykorzystanie usług Azure do budowania skalowalnych systemów" 
-
-Warsztat dla: [Future Processing](https://www.future-processing.pl/)
-
-Warsztat w wersji 7h
+# Projekt treningowy do warsztatu z usług poziomu Platform as a Service na Microsoft Azure
 
 ## Instrukcja
 
-### Zadanie 1 - prosta aplikacja na Azure
+### Zadanie 1 - uruchomienie aplikacji lokalnie
 
-- Stwórz dwie usługi: Azure Web App oraz Azure SQL Database.
-- Stwórz fork tego repozytorium na własne konto GitHub.
-- Uruchom aplikację z tego repozytorium, wykorzystując funkcję Continuous Deployment, usługi Web App.
-- Skonfiguruj Web App, aby korzystała ze stworzonej SQL Database (nadpisz connection string w ustawieniach Web App).
+- Pobierz to repozytorium lokalnie. Polecenie git clone uri_do_repozytorium.
+- Przełącz się na branch 01-start. Polecenie: git checkout 01-start
+- Uruchom aplikację. Baza danych powinna stworzyć się automatycznie na lokalnej instancji SQL Server.
 
-Kryteria akceptacji:
-- Potrafisz uruchomić aplikację i dodać nowy projekt do systemu.
+### Zadanie 2 - wdrożenie aplikacji na usługi Microsoft Azure
 
-### Zadanie 2 - storage
-
-
-``` git 
-git checkout ex-2-start-storage 
-
-```
-
-- Załóż usługę Storage Account.
-- Przy pomocy [Azure Storage Explorer](https://azurestorageexplorer.codeplex.com/) dodaj dowolny plik i pobrać go z portalu Azure.
-- W repozytorium przełączyć się na branch: 
-- Uzupełnij implantację klasy FilesStorageService, tak aby zapisywała ona pliki w Azure Storage i zwracała adres nowego bloba (skorzystaj z podpowiedzi w kodzie)
-
-Kryteria akceptacji:
-- Potrafisz dodać nowy wpis ze zdjęciem do dziennika projektu oraz wyświetlić to zdjęcie na liście wpisów.
-
-### Zadanie 3 - przetwarzanie w tle
-
-``` git 
-git checkout ex-3-start-background-processing
-
-```
 Część pierwsza
 
-- Stwórz usługę Service Bus Namespace
-- Zaimplementuj komunikację pomiędzy Web App a Web Job przy pomocy Service Bus. 
-	- Uzupełnij implementację w miejscach wskazanych komentarzem "TODO ex3:"
-    - Uzupełnij brakujące wartości w konfiguracji
-- Przy pracy nad tym zadaniem przydatne może się okazać kożystanie z Web Job Dashboard. Poniższy artykuł pokazuje jak go uruchomić:
-    - http://blogs.msdn.com/b/jmstall/archive/2014/01/27/getting-a-dashboard-for-local-development-with-the-webjobs-sdk.aspx
-    - Aktualizacja do artykułu: zamiast klucza "AzureJobsRuntime", należy odpowiednio ustawić "AzureWebJobsDashboard" i "AzureWebJobsStorage".
-    
-Kryteria akceptacji:
-- Zdjęcia dodawane przez aplikację, są zmniejszane przez Web Job i na liście wpisów wyświetlane są ich miniatury.
+- Zaloguj się do portalu Azure [https://portal.azure.com](https://portal.azure.com)
+- Stwórz dwie usługi: Azure Web App oraz Azure SQL Database.
 
-Część druga:
-- Skonfiguruj aplikację konsolową PictureOptimizer aby została automatycznie wgrana jako Web Job
+Część druga
 
-Pełne rozwiązanie:
+- Pobierz „publish profile” dla usługi Web App. Znajdziesz go na zakładce usługi (blade) w portalu „Get publish profile”
+- Na zakładce stworzonej bazy danych znajdź jej „connection string” i uzupełnij o brakujące hasło.
+- W Visual Studio użyj opcji „publish” w menu kontekstowym aplikacji webowej i opublikuj projekt wykorzystując przygotowane publish profile i connection string.
+
+
+- Skonfiguruj Web App, aby korzystała ze stworzonej SQL Database (nadpisz connection string w ustawieniach Web App).
+
+
+### Zadanie 3 - storage
+
+- Załóż usługę Storage Account.
+- Uzupełnij implantację klasy FilesStorageService, tak aby zapisywała ona pliki w Azure Storage i zwracała adres nowego bloba. 
+    - Zainstaluj paczkę Nuget WindowsAzure.Storage do projetu zawierającego wspomnianą klasę.
+    - Wykorzystaj i uzupełnij zakomentowany kod.
+    - W razie problemów skozystaj z instrukcji w [dokumentacji](https://azure.microsoft.com/en-us/documentation/articles/storage-dotnet-how-to-use-blobs#_programmatically-access-blob-storage) - sekcja Programmatically access Blob storage.
+- Po implementacji powinieneś móc dodać nowy wpis ze zdjęciem do dziennika projektu oraz wyświetlić to zdjęcie na liście wpisów.
+- Zaimplementuj zmiany lokalnie, nie musisz publikować ich na Chmurę. 
+
+Gotowe rozwiązanie można znaleźć na kolejnym branchu:
+
 ``` git 
-git checkout ex-3-extra-background-processing-as-web-job
+git checkout 02-storage 
 
 ```
 
+### Zadanie 4 - diagnostyka
 
-### Zadanie 4 - application insights
-
-- Skonfiguruj aplikację, aby wysyłała dane telemetryczne do usługi Application Insights
-
-Pełne rozwiązanie:
-
-``` git 
-git checkout ex-4-finish-application-insights
-
-```
+- Zainstaluj do projektu paczkę NuGet "Microsoft.ApplicationInsights.Web"
+- Znajdz w portalu Azure panel zarządzania usługią Application Insights (instancja została stworzona przy okazji tworzenia Web App) i znajdz Instrumentation Key
+- W pliku konfiguracyjnym "ApplicationInsights.config" skonfiguruj InstrumentationKey do stworzeniej instacji. 
+- Uruchom stronę (lokalnie). Dodaj nowe wpisy, otwórz kilka stron, aby wygenerować ruch.
+- Po kilku minutach otwórz panel usługi Application Insights w portalu i przeanalizuj przesłane dane.
 
 ### Zadanie 5 - skalowanie
 
+Wstęp: Zrób deploy aplikacji na usługę Web App wykorzystując opcje z ustawień usługi
+
+- Skonfiguruj: Continuous Deployment/Local Git repository 
+- Ustaw poświadczenia repozytorium: Deployment credentials
+- Dodaj nowy 'remote' do repozytorium na twojej maszynie: git remote add azure url_repozytorium_azure
+- Git push azure: git push -u azure 03-app-insights:master
+
+Ćwiczenie
+
+- Skonfiguruj opcje skalowania aplikacji, aby działała ona na wielu instancjach. Zaobserwuj czy konfiguracja działa ("Rendered at instance" w stopce aplikacji).
+- Zadanie domowe: skonfiguruj automatyczne skalowanie i doprowadź do obciążenia systemu, które spowoduje dodanie nowych instancji. 
+
+### Zadanie 5 - przetwarzanie w tle
+
+Przełącz się na branch:
+
 ``` git 
-git checkout ex-5-scaling
+git checkout 04-web-jobs
 
 ```
 
-- Uruchom powyższa wersję aplikacji w Azure
-- Skonfiguruj Web App ręcznie, aby obsługiwała ruch na więcej niż jednej instancji. Upewnij się, że requesty obsługiwane są przez różne instancje.
-- Extra: Skonfiguruj w Web App reguły autoskalowania i doprowadź do obciążenia systemu, tak, aby doprowadzić do skalowania
-    - Stwórz funkcę obsługi wiadomości dla nowej kolejki
-    - Zaimplementuj w niej kod mocno obciążający procesor np.: http://stackoverflow.com/questions/13001578/i-need-a-slow-c-sharp-function)
-    - Wykorzystaj Service Bus Explorer (https://code.msdn.microsoft.com/windowsapps/Service-Bus-Explorer-f2abca5a) aby dodać ko kolejki dużo wiadomości i mocno obciążyć WebApp.
+- Stwórz usługę Service Bus Namespace (w Azure Classic Portal: https://manage.windowsazure.com/)
+- Uzupełnij brakujące wartości w konfiguracji aplikacji, tak, aby aplikacja Web i PictureOptimizer skomunikowały się wykorzystując Service Bus
+- Przetestuj aplikacje lokalnie - dobrze działająca aplikacja powinna zmniejszać zapisane zdjęcia i na widoku listy prezentować miniatury. 
+- Wdróż system na chmurę.
+- Korzystając Web Job Dashboard upewnij się, że aplikacja wdrożona aplikacja poprawnie przetwarza zdjęcia.
+
+## IaaS - Ćwiczenia
+
+### Ćwiczenie 6 - maszyny wirtualne
+
+- Stwórz marzynę wirtalną (Windows Serwer 2012 lub Ubuntu Server)
+- Wybierz Deployment model: Resource Manager
+- Połącz sie z maszyną (Zdalny pulpit dla Windows, SSH dla Ubuntu)
+- Uruchom lekki serwer http na maszynie.
+    - Windows: pobierz [nginx](http://nginx.org/download/nginx-1.8.1.zip) i zmień konfigurację firewalla aby udostępnić port 80.
+    - Ubuntu: apt-get nginx
+- Zweryfikuj czy można dostać się do stworzonej maszyny.
+
+### Ćwiczenie 7 - sieci wirtualne
+
+- Stwórz usługę Virtual Network, w kreatorze wybrać opcję "Configure a Point-to-Site VPN) oraz dodać Gateway Subnet
+- Na ostatniej zakładce wybierz "add gateway subnet"
+- Stwórz gateway w sieci, używając opcji "Add Gateway" w stopce panelu zarządzania siecą.
+- Powyższa akcja potrwa około 30min - trzeba w takim razie zająć się czymś innym.
+- Wygeneruj self-signed Root Certificate oraz jego Client Certificate. 
+- Wgraj Root Certificate do konfiguracji sieci. 
+- Pobierz instalator interfejsu VPN i połącz się z siecią.
+- Stwórz maszynę wirtualną (w modelu classic) dodając ją do stworzonej sieci. Skonfiguruj tak, aby dało się do niej podłączyć tylko przez sieć wirtualną.  
 
 
-### Zadanie 6 - Azure Resource Manager
+## Azure Active Directory
+
+### Zadanie 8* - Azure Active Directory
+
+- Stwórz nowe Azure Active Directory (Classic Azure Portal) (or use Training Future Processing)
+- W Visual Studio użyj opcji „Configure Azure AD Authentication” w menu kontekstowym aplikacji webowej.
+- Postępuj zgodnie z kreatorem, wybierając stworzone konto AD.
+- Rozwiąż kilka problemów:
+    - Na moment tworzenia tego szkolenia, występuje problem z wersją Microsoft.Data.Edm. Aby go rozwiązać, należy wykonać polecenie "Update-Package Microsoft.Data.Edm" w Package Manager Console
+    - Usuń z kodu HTML kod (4 wystąpienia): @Html.AntiForgeryToken()
+- Aby zapewnić możliwość wylogowania, umieść fragment kodu w głównym dokumencie HTML aplikacji. @Html.Partial("_LoginPartial")  // "<ul class="nav navbar-nav">"
+
+Pełne rozwiązanie znajduje się na branchu
 
 ``` git 
-git checkout ex-6-start-arm
+git checkout 05-azure-active-directory
 
 ```
-
-- Zrób deployment Resource Grupy wykorzystując template file oraz komendy Powershell w katalogu AzureResourceManager.
-- Rozwiń template file tak aby deployowane środowisko uruchamiało aplikację działającą analogicznie do stworzonej wcześniej przez portal.
-    - Skonfiguruj ustawienia firewall, aby zezwalał na połączenia od innych usług Azure.
-    - Skonfiguruj automatyczny deployment projektu z kodu na GitHub'ie do usługi Web App.
-    - Skonfiguruj connection string w Web App, aby ta korzystała ze stworzonej bazy danych.
-    - Zadanie z gwiazdką: skonfiguruj connection string do stworzonego storage accout.
-- Przydatne linki 
-    - https://resources.azure.com/
-    - https://github.com/Azure/azure-quickstart-templates/blob/master/201-web-app-github-deploy/azuredeploy.json
-    - https://azure.microsoft.com/pl-pl/documentation/articles/resource-group-authoring-templates/
-    - https://azure.microsoft.com/pl-pl/documentation/articles/resource-group-template-functions/ 
-
