@@ -6,6 +6,7 @@ using Common;
 
 namespace AzureConstructionsProgressTracker.Controllers
 {
+    [Authorize]
     public class ConstructionProjectsController : Controller
     {
         private ConstructionsProgressTrackerContext db = new ConstructionsProgressTrackerContext();
@@ -41,7 +42,6 @@ namespace AzureConstructionsProgressTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name,Notes")] ConstructionProject constructionProject)
         {
             if (ModelState.IsValid)
@@ -73,7 +73,6 @@ namespace AzureConstructionsProgressTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Notes")] ConstructionProject constructionProject)
         {
             if (ModelState.IsValid)
@@ -86,7 +85,6 @@ namespace AzureConstructionsProgressTracker.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(int id)
         {
             var project = await db.ConstructionProjects.FindAsync(id);

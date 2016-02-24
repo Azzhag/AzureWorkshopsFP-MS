@@ -1,13 +1,14 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(AzureConstructionsProgressTracker.Startup))]
+[assembly: OwinStartupAttribute(typeof (AzureConstructionsProgressTracker.Startup))]
 namespace AzureConstructionsProgressTracker
 {
-    public class Startup
+    public partial class Startup
     {
         public void Configuration(IAppBuilder app)
         {
+            ConfigureAuth(app);
         }
     }
 }

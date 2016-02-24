@@ -12,6 +12,7 @@ using Common;
 
 namespace AzureConstructionsProgressTracker.Controllers
 {
+    [Authorize]
     public class ProgressTrackingController : Controller
     {
         private readonly ConstructionsProgressTrackerContext _db = new ConstructionsProgressTrackerContext();
@@ -54,7 +55,6 @@ namespace AzureConstructionsProgressTracker.Controllers
 
         // POST: ProgressTracking/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Notes,PictureReference,ConstructionProjectId")] ProgressTrackingEntry progressTrackingEntry)
         {
             if (ModelState.IsValid)
